@@ -20,6 +20,12 @@ function App() {
     }
   }, [])
 
+  function handleLogout() {
+    localStorage.removeItem("token")
+    setIsLoggedIn(false)
+    setApplications([])
+  }
+
   async function handleLogin(event) {
     event.preventDefault()
 
@@ -149,6 +155,8 @@ function App() {
   
       {isLoggedIn && (
         <>
+          <button onClick={handleLogout}>Logout</button>
+
           <h2>Add Application</h2>
   
           <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
