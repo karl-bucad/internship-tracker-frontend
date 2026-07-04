@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
+import "./App.css"
 
 function App() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [applications, setApplications] = useState([])
-  
+
   const [company, setCompany] = useState("")
   const [role, setRole] = useState("")
   const [status, setStatus] = useState("")
@@ -67,9 +68,9 @@ function App() {
 
   async function handleAddApplication(event) {
     event.preventDefault()
-  
+
     const token = localStorage.getItem("token")
-  
+
     await fetch("http://127.0.0.1:8000/applications", {
       method: "POST",
       headers: {
@@ -82,32 +83,32 @@ function App() {
         status: status,
       }),
     })
-  
+
     setCompany("")
     setRole("")
     setStatus("")
-  
+
     fetchApplications()
   }
 
   async function handleDeleteApplication(id) {
     const token = localStorage.getItem("token")
-  
+
     await fetch(`http://127.0.0.1:8000/applications/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-  
+
     fetchApplications()
   }
 
   async function handleUpdateApplication(event) {
     event.preventDefault()
-  
+
     const token = localStorage.getItem("token")
-  
+
     await fetch(`http://127.0.0.1:8000/applications/${editingId}`, {
       method: "PUT",
       headers: {
@@ -120,81 +121,90 @@ function App() {
         status: status,
       }),
     })
-  
+
     setCompany("")
     setRole("")
     setStatus("")
     setEditingId(null)
-  
+
     fetchApplications()
   }
 
   return (
-    <div>
+    <div className="app">
       <h1>Internship Tracker</h1>
-  
-      <h2>Login</h2>
-  
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-  
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-  
-        <button type="submit">Login</button>
-      </form>
-  
+
+      {!isLoggedIn && (
+        <div className="login-card">
+          <h2>Login</h2>
+
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+
+            <button type="submit">Login</button>
+          </form>
+        </div>
+      )}
+
       {isLoggedIn && (
         <>
-          <button onClick={handleLogout}>Logout</button>
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
 
-          <h2>Add Application</h2>
-  
-          <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
-            <input
-              type="text"
-              placeholder="Company"
-              value={company}
-              onChange={(event) => setCompany(event.target.value)}
-            />
-  
-            <input
-              type="text"
-              placeholder="Role"
-              value={role}
-              onChange={(event) => setRole(event.target.value)}
-            />
-  
-            <input
-              type="text"
-              placeholder="Status"
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            />
-  
-            <button type="submit">
-              {editingId ? "Update Application" : "Add Application"}
-            </button>
-          </form>
-  
+          <div className="application-form-card">
+            <h2>{editingId ? "Edit Application" : "Add Application"}</h2>
+
+            <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
+              <input
+                type="text"
+                placeholder="Company"
+                value={company}
+                onChange={(event) => setCompany(event.target.value)}
+              />
+
+              <input
+                type="text"
+                placeholder="Role"
+                value={role}
+                onChange={(event) => setRole(event.target.value)}
+              />
+
+              <input
+                type="text"
+                placeholder="Status"
+                value={status}
+                onChange={(event) => setStatus(event.target.value)}
+              />
+
+              <button type="submit">
+                {editingId ? "Update Application" : "Add Application"}
+              </button>
+            </form>
+          </div>
+
           <h2>My Applications</h2>
-  
+
           {applications.map((application) => (
-            <div key={application.id}>
+            <div key={application.id} className="application-card">
               <h3>{application.company}</h3>
               <p>{application.role}</p>
               <p>{application.status}</p>
-  
+
               <button
+                className="edit-button"
                 onClick={() => {
                   setEditingId(application.id)
                   setCompany(application.company)
@@ -204,8 +214,10 @@ function App() {
               >
                 Edit
               </button>
-  
-              <button onClick={() => handleDeleteApplication(application.id)}>
+
+              <button
+                className="delete-button"
+                onClick={() => handleDeleteApplication(application.id)}>
                 Delete
               </button>
             </div>
