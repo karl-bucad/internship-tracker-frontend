@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 function App() {
   const [email, setEmail] = useState("")
@@ -9,6 +9,16 @@ function App() {
   const [role, setRole] = useState("")
   const [status, setStatus] = useState("")
   const [editingId, setEditingId] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+
+    if (token) {
+      setIsLoggedIn(true)
+      fetchApplications()
+    }
+  }, [])
 
   async function handleLogin(event) {
     event.preventDefault()
@@ -29,6 +39,8 @@ function App() {
     const data = await response.json()
 
     localStorage.setItem("token", data.access_token)
+
+    setIsLoggedIn(true)
 
     fetchApplications()
   }
@@ -135,59 +147,63 @@ function App() {
         <button type="submit">Login</button>
       </form>
   
-      <h2>Add Application</h2>
+      {isLoggedIn && (
+        <>
+          <h2>Add Application</h2>
   
-      <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
-        <input
-          type="text"
-          placeholder="Company"
-          value={company}
-          onChange={(event) => setCompany(event.target.value)}
-        />
+          <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
+            <input
+              type="text"
+              placeholder="Company"
+              value={company}
+              onChange={(event) => setCompany(event.target.value)}
+            />
   
-        <input
-          type="text"
-          placeholder="Role"
-          value={role}
-          onChange={(event) => setRole(event.target.value)}
-        />
+            <input
+              type="text"
+              placeholder="Role"
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
+            />
   
-        <input
-          type="text"
-          placeholder="Status"
-          value={status}
-          onChange={(event) => setStatus(event.target.value)}
-        />
+            <input
+              type="text"
+              placeholder="Status"
+              value={status}
+              onChange={(event) => setStatus(event.target.value)}
+            />
   
-        <button type="submit">
-          {editingId ? "Update Application" : "Add Application"}
-          </button>
-      </form>
+            <button type="submit">
+              {editingId ? "Update Application" : "Add Application"}
+            </button>
+          </form>
   
-      <h2>My Applications</h2>
+          <h2>My Applications</h2>
   
-      {applications.map((application) => (
-        <div key={application.id}>
-          <h3>{application.company}</h3>
-          <p>{application.role}</p>
-          <p>{application.status}</p>
-
-          <button
-            onClick={() => {
-              setEditingId(application.id)
-              setCompany(application.company)
-              setRole(application.role)
-              setStatus(application.status)
-            }}
-          >
-            Edit
-          </button>
-
-          <button onClick={() => handleDeleteApplication(application.id)}>
-            Delete
-          </button>
-        </div>
-      ))}
+          {applications.map((application) => (
+            <div key={application.id}>
+              <h3>{application.company}</h3>
+              <p>{application.role}</p>
+              <p>{application.status}</p>
+  
+              <button
+                onClick={() => {
+                  setEditingId(application.id)
+                  setCompany(application.company)
+                  setRole(application.role)
+                  setStatus(application.status)
+                }}
+              >
+                Edit
+              </button>
+  
+              <button onClick={() => handleDeleteApplication(application.id)}>
+                Delete
+              </button>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   )
 }
