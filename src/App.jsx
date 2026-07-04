@@ -8,6 +8,7 @@ function App() {
   const [company, setCompany] = useState("")
   const [role, setRole] = useState("")
   const [status, setStatus] = useState("")
+  const [editingId, setEditingId] = useState(null)
 
   async function handleLogin(event) {
     event.preventDefault()
@@ -84,6 +85,32 @@ function App() {
     fetchApplications()
   }
 
+  async function handleUpdateApplication(event) {
+    event.preventDefault()
+  
+    const token = localStorage.getItem("token")
+  
+    await fetch(`http://127.0.0.1:8000/applications/${editingId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        company: company,
+        role: role,
+        status: status,
+      }),
+    })
+  
+    setCompany("")
+    setRole("")
+    setStatus("")
+    setEditingId(null)
+  
+    fetchApplications()
+  }
+
   return (
     <div>
       <h1>Internship Tracker</h1>
@@ -110,7 +137,7 @@ function App() {
   
       <h2>Add Application</h2>
   
-      <form onSubmit={handleAddApplication}>
+      <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
         <input
           type="text"
           placeholder="Company"
@@ -132,7 +159,9 @@ function App() {
           onChange={(event) => setStatus(event.target.value)}
         />
   
-        <button type="submit">Add Application</button>
+        <button type="submit">
+          {editingId ? "Update Application" : "Add Application"}
+          </button>
       </form>
   
       <h2>My Applications</h2>
@@ -142,6 +171,17 @@ function App() {
           <h3>{application.company}</h3>
           <p>{application.role}</p>
           <p>{application.status}</p>
+
+          <button
+            onClick={() => {
+              setEditingId(application.id)
+              setCompany(application.company)
+              setRole(application.role)
+              setStatus(application.status)
+            }}
+          >
+            Edit
+          </button>
 
           <button onClick={() => handleDeleteApplication(application.id)}>
             Delete
