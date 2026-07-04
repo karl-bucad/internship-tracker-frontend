@@ -71,6 +71,19 @@ function App() {
     fetchApplications()
   }
 
+  async function handleDeleteApplication(id) {
+    const token = localStorage.getItem("token")
+  
+    await fetch(`http://127.0.0.1:8000/applications/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  
+    fetchApplications()
+  }
+
   return (
     <div>
       <h1>Internship Tracker</h1>
@@ -129,6 +142,10 @@ function App() {
           <h3>{application.company}</h3>
           <p>{application.role}</p>
           <p>{application.status}</p>
+
+          <button onClick={() => handleDeleteApplication(application.id)}>
+            Delete
+          </button>
         </div>
       ))}
     </div>
