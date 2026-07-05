@@ -15,6 +15,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("All")
+  const [sortOrder, setSortOrder] = useState("newest")
   const [errorMessage, setErrorMessage] = useState("")
   const [authMode, setAuthMode] = useState("login")
   const [username, setUsername] = useState("")
@@ -42,6 +43,14 @@ function App() {
       statusFilter == "All" || application.status == statusFilter
 
     return matchesSearch && matchesStatus
+  })
+
+  const sortedApplications = [...filteredApplications].sort((a, b) => {
+    if (sortOrder == "newest") {
+      return b.applied_date.localeCompare(a.applied_date)
+    }
+
+    return a.applied_date.localeCompare(b.applied_date)
   })
 
   useEffect(() => {
@@ -420,11 +429,20 @@ function App() {
             <option value="Offer">Offer</option>
           </select>
 
+          <select
+            className="filter-select"
+            value={sortOrder}
+            onChange={(event) => setSortOrder(event.target.value)}
+          >
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+
           {filteredApplications.length == 0 && (
             <p className="no-results">No applications found.</p>
           )}
 
-          {filteredApplications.map((application) => (
+          {sortedApplications.map((application) => (
             <div key={application.id} className="application-card">
               <h3>{application.company}</h3>
               <p>{application.role}</p>
