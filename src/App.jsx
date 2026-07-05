@@ -9,6 +9,7 @@ function App() {
   const [company, setCompany] = useState("")
   const [role, setRole] = useState("")
   const [status, setStatus] = useState("")
+  const [notes, setNotes] = useState("")
   const [editingId, setEditingId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
@@ -171,12 +172,14 @@ function App() {
         company: company,
         role: role,
         status: status,
+        notes: notes,
       }),
     })
 
     setCompany("")
     setRole("")
     setStatus("")
+    setNotes("")
 
     fetchApplications()
   }
@@ -209,12 +212,14 @@ function App() {
         company: company,
         role: role,
         status: status,
+        notes: notes,
       }),
     })
 
     setCompany("")
     setRole("")
     setStatus("")
+    setNotes("")
     setEditingId(null)
 
     fetchApplications()
@@ -355,6 +360,12 @@ function App() {
                 <option value="Offer">Offer</option>
               </select>
 
+              <textarea
+                placeholder="Notes (optional)"
+                value={notes}
+                onChange={(event) => setNotes(event.target.value)}
+              />
+
               <button type="submit">
                 {editingId ? "Update Application" : "Add Application"}
               </button>
@@ -367,6 +378,7 @@ function App() {
                     setCompany("")
                     setRole("")
                     setStatus("")
+                    setNotes("")
                   }}
                 >
                   Cancel
@@ -404,6 +416,11 @@ function App() {
             <div key={application.id} className="application-card">
               <h3>{application.company}</h3>
               <p>{application.role}</p>
+
+              {application.notes && (
+                <p className="application-notes">{application.notes}</p>
+              )}
+
               <span className={`status-badge ${application.status.toLowerCase()}`}>
                 {application.status}
               </span>
@@ -415,6 +432,7 @@ function App() {
                   setCompany(application.company)
                   setRole(application.role)
                   setStatus(application.status)
+                  setNotes(application.notes || "")
                 }}
               >
                 Edit
