@@ -276,3 +276,28 @@
   color: #dc2626;
   font-weight: 600;
 }
+
+.success-message {
+  margin: 16px 0 0;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.auth-switch {
+  margin-bottom: 0;
+  color: #6b7280;
+}
+
+.auth-switch button {
+  margin-left: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-switch button:hover {
+  text-decoration: underline;
+}

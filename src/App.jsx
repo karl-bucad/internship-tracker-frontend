@@ -16,6 +16,7 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("")
   const [authMode, setAuthMode] = useState("login")
   const [username, setUsername] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
 
   const appliedCount = applications.filter(
     (application) => application.status === "Applied"
@@ -79,6 +80,7 @@ function App() {
     }
 
     setErrorMessage("")
+    setSuccessMessage("")
 
     localStorage.setItem("token", data.access_token)
 
@@ -110,6 +112,7 @@ function App() {
     }
 
     setErrorMessage("")
+    setSuccessMessage("Account created successfully. You can now log in.")
     setAuthMode("login")
     setUsername("")
     setPassword("")
@@ -242,6 +245,11 @@ function App() {
             {errorMessage && (
               <p className="error-message">{errorMessage}</p>
             )}
+
+            {successMessage && (
+              <p className="success-message">{successMessage}</p>
+            )}
+
           </form>
 
           <p className="auth-switch">
@@ -254,6 +262,7 @@ function App() {
               onClick={() => {
                 setAuthMode(authMode === "login" ? "signup" : "login")
                 setErrorMessage("")
+                setSuccessMessage("")
               }}
             >
               {authMode === "login" ? "Sign Up" : "Login"}
@@ -261,7 +270,7 @@ function App() {
           </p>
         </div>
       )}
-      
+
       {isLoggedIn && (
         <>
           <button className="logout-button" onClick={handleLogout}>
