@@ -246,3 +246,27 @@
 .search-input:focus {
   border-color: #2563eb;
 }
+
+.filter-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.filter-select:focus {
+  border-color: #2563eb;
+}
+
+.no-results {
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+  color: #6b7280;
+}

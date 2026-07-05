@@ -12,6 +12,7 @@ function App() {
   const [editingId, setEditingId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
+  const [statusFilter, setStatusFilter] = useState("All")
 
   const appliedCount = applications.filter(
     (application) => application.status === "Applied"
@@ -26,289 +27,308 @@ function App() {
   ).length
 
   const filteredApplications = applications.filter((application) => {
-    return (
+    const matchesSearch =
       application.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
       application.role.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+
+    const matchesStatus =
+      statusFilter == "All" || application.status == statusFilter
+
+    return matchesSearch && matchesStatus
+})
+
+useEffect(() => {
+  const token = localStorage.getItem("token")
+
+  if (token) {
+    setIsLoggedIn(true)
+    fetchApplications()
+  }
+}, [])
+
+function handleLogout() {
+  localStorage.removeItem("token")
+  setIsLoggedIn(false)
+  setApplications([])
+}
+
+async function handleLogin(event) {
+  event.preventDefault()
+
+  const formData = new URLSearchParams()
+
+  formData.append("username", email)
+  formData.append("password", password)
+
+  const response = await fetch("http://127.0.0.1:8000/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formData,
   })
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
+  const data = await response.json()
 
-    if (token) {
-      setIsLoggedIn(true)
-      fetchApplications()
-    }
-  }, [])
+  localStorage.setItem("token", data.access_token)
 
-  function handleLogout() {
+  setIsLoggedIn(true)
+
+  fetchApplications()
+}
+
+async function fetchApplications() {
+  const token = localStorage.getItem("token")
+
+  const response = await fetch("http://127.0.0.1:8000/applications", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  if (!response.ok) {
     localStorage.removeItem("token")
     setIsLoggedIn(false)
     setApplications([])
+    return
   }
 
-  async function handleLogin(event) {
-    event.preventDefault()
+  const data = await response.json()
 
-    const formData = new URLSearchParams()
+  setApplications(data)
+}
 
-    formData.append("username", email)
-    formData.append("password", password)
+async function handleAddApplication(event) {
+  event.preventDefault()
 
-    const response = await fetch("http://127.0.0.1:8000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData,
-    })
+  const token = localStorage.getItem("token")
 
-    const data = await response.json()
+  await fetch("http://127.0.0.1:8000/applications", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      company: company,
+      role: role,
+      status: status,
+    }),
+  })
 
-    localStorage.setItem("token", data.access_token)
+  setCompany("")
+  setRole("")
+  setStatus("")
 
-    setIsLoggedIn(true)
+  fetchApplications()
+}
 
-    fetchApplications()
-  }
+async function handleDeleteApplication(id) {
+  const token = localStorage.getItem("token")
 
-  async function fetchApplications() {
-    const token = localStorage.getItem("token")
+  await fetch(`http://127.0.0.1:8000/applications/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
 
-    const response = await fetch("http://127.0.0.1:8000/applications", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+  fetchApplications()
+}
 
-    if (!response.ok) {
-      localStorage.removeItem("token")
-      setIsLoggedIn(false)
-      setApplications([])
-      return
-    }
+async function handleUpdateApplication(event) {
+  event.preventDefault()
 
-    const data = await response.json()
+  const token = localStorage.getItem("token")
 
-    setApplications(data)
-  }
+  await fetch(`http://127.0.0.1:8000/applications/${editingId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      company: company,
+      role: role,
+      status: status,
+    }),
+  })
 
-  async function handleAddApplication(event) {
-    event.preventDefault()
+  setCompany("")
+  setRole("")
+  setStatus("")
+  setEditingId(null)
 
-    const token = localStorage.getItem("token")
+  fetchApplications()
+}
 
-    await fetch("http://127.0.0.1:8000/applications", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        company: company,
-        role: role,
-        status: status,
-      }),
-    })
+return (
+  <div className="app">
+    <h1>Internship Tracker</h1>
 
-    setCompany("")
-    setRole("")
-    setStatus("")
+    {!isLoggedIn && (
+      <div className="login-card">
+        <h2>Login</h2>
 
-    fetchApplications()
-  }
-
-  async function handleDeleteApplication(id) {
-    const token = localStorage.getItem("token")
-
-    await fetch(`http://127.0.0.1:8000/applications/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    fetchApplications()
-  }
-
-  async function handleUpdateApplication(event) {
-    event.preventDefault()
-
-    const token = localStorage.getItem("token")
-
-    await fetch(`http://127.0.0.1:8000/applications/${editingId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        company: company,
-        role: role,
-        status: status,
-      }),
-    })
-
-    setCompany("")
-    setRole("")
-    setStatus("")
-    setEditingId(null)
-
-    fetchApplications()
-  }
-
-  return (
-    <div className="app">
-      <h1>Internship Tracker</h1>
-
-      {!isLoggedIn && (
-        <div className="login-card">
-          <h2>Login</h2>
-
-          <form onSubmit={handleLogin}>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-
-            <button type="submit">Login</button>
-          </form>
-        </div>
-      )}
-
-      {isLoggedIn && (
-        <>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-
-          <div className="summary-card">
-            <h2>Dashboard</h2>
-
-            <div className="summary-stats">
-              <div>
-                <span>{applications.length}</span>
-                <p>Total</p>
-              </div>
-
-              <div>
-                <span>{appliedCount}</span>
-                <p>Applied</p>
-              </div>
-
-              <div>
-                <span>{interviewCount}</span>
-                <p>Interviews</p>
-              </div>
-
-              <div>
-                <span>{offerCount}</span>
-                <p>Offers</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="application-form-card">
-            <h2>{editingId ? "Edit Application" : "Add Application"}</h2>
-
-            <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
-              <input
-                type="text"
-                placeholder="Company"
-                value={company}
-                onChange={(event) => setCompany(event.target.value)}
-                required
-              />
-
-              <input
-                type="text"
-                placeholder="Role"
-                value={role}
-                onChange={(event) => setRole(event.target.value)}
-                required
-              />
-
-              <select
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
-                required
-              >
-                <option value="">Select status</option>
-                <option value="Applied">Applied</option>
-                <option value="Interview">Interview</option>
-                <option value="Offer">Offer</option>
-              </select>
-
-              <button type="submit">
-                {editingId ? "Update Application" : "Add Application"}
-              </button>
-
-              {editingId && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditingId(null)
-                    setCompany("")
-                    setRole("")
-                    setStatus("")
-                  }}
-                >
-                  Cancel
-                </button>
-              )}
-            </form>
-          </div>
-
-          <h2>My Applications</h2>
-
+        <form onSubmit={handleLogin}>
           <input
-            className="search-input"
-            type="text"
-            placeholder="Search by company or role"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
           />
 
-          {filteredApplications.map((application) => (
-            <div key={application.id} className="application-card">
-              <h3>{application.company}</h3>
-              <p>{application.role}</p>
-              <span className={`status-badge ${application.status.toLowerCase()}`}>
-                {application.status}
-              </span>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
 
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    )}
+
+    {isLoggedIn && (
+      <>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+
+        <div className="summary-card">
+          <h2>Dashboard</h2>
+
+          <div className="summary-stats">
+            <div>
+              <span>{applications.length}</span>
+              <p>Total</p>
+            </div>
+
+            <div>
+              <span>{appliedCount}</span>
+              <p>Applied</p>
+            </div>
+
+            <div>
+              <span>{interviewCount}</span>
+              <p>Interviews</p>
+            </div>
+
+            <div>
+              <span>{offerCount}</span>
+              <p>Offers</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="application-form-card">
+          <h2>{editingId ? "Edit Application" : "Add Application"}</h2>
+
+          <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
+            <input
+              type="text"
+              placeholder="Company"
+              value={company}
+              onChange={(event) => setCompany(event.target.value)}
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Role"
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
+              required
+            />
+
+            <select
+              value={status}
+              onChange={(event) => setStatus(event.target.value)}
+              required
+            >
+              <option value="">Select status</option>
+              <option value="Applied">Applied</option>
+              <option value="Interview">Interview</option>
+              <option value="Offer">Offer</option>
+            </select>
+
+            <button type="submit">
+              {editingId ? "Update Application" : "Add Application"}
+            </button>
+
+            {editingId && (
               <button
-                className="edit-button"
+                type="button"
                 onClick={() => {
-                  setEditingId(application.id)
-                  setCompany(application.company)
-                  setRole(application.role)
-                  setStatus(application.status)
+                  setEditingId(null)
+                  setCompany("")
+                  setRole("")
+                  setStatus("")
                 }}
               >
-                Edit
+                Cancel
               </button>
+            )}
+          </form>
+        </div>
 
-              <button
-                className="delete-button"
-                onClick={() => handleDeleteApplication(application.id)}>
-                Delete
-              </button>
-            </div>
-          ))}
-        </>
-      )}
-    </div>
-  )
+        <h2>My Applications</h2>
+
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search by company or role"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+        />
+
+        <select
+          className="filter-select"
+          value={statusFilter}
+          onChange={(event) => setStatusFilter(event.target.value)}
+        >
+          <option value="All">All statuses</option>
+          <option value="Applied">Applied</option>
+          <option value="Interview">Interview</option>
+          <option value="Offer">Offer</option>
+        </select>
+
+        {filteredApplications.length == 0 && (
+          <p className="no-results">No applications found.</p>
+        )}
+
+        {filteredApplications.map((application) => (
+          <div key={application.id} className="application-card">
+            <h3>{application.company}</h3>
+            <p>{application.role}</p>
+            <span className={`status-badge ${application.status.toLowerCase()}`}>
+              {application.status}
+            </span>
+
+            <button
+              className="edit-button"
+              onClick={() => {
+                setEditingId(application.id)
+                setCompany(application.company)
+                setRole(application.role)
+                setStatus(application.status)
+              }}
+            >
+              Edit
+            </button>
+
+            <button
+              className="delete-button"
+              onClick={() => handleDeleteApplication(application.id)}>
+              Delete
+            </button>
+          </div>
+        ))}
+      </>
+    )}
+  </div>
+)
 }
 
 export default App
