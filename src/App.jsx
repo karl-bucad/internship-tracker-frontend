@@ -11,6 +11,7 @@ function App() {
   const [status, setStatus] = useState("")
   const [editingId, setEditingId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
 
   const appliedCount = applications.filter(
     (application) => application.status === "Applied"
@@ -23,6 +24,13 @@ function App() {
   const offerCount = applications.filter(
     (application) => application.status === "Offer"
   ).length
+
+  const filteredApplications = applications.filter((application) => {
+    return (
+      application.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      application.role.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  })
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -262,7 +270,15 @@ function App() {
 
           <h2>My Applications</h2>
 
-          {applications.map((application) => (
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Search by company or role"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
+
+          {filteredApplications.map((application) => (
             <div key={application.id} className="application-card">
               <h3>{application.company}</h3>
               <p>{application.role}</p>
