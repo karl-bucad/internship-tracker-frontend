@@ -17,6 +17,7 @@ function App() {
   const [authMode, setAuthMode] = useState("login")
   const [username, setUsername] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const appliedCount = applications.filter(
     (application) => application.status === "Applied"
@@ -59,63 +60,79 @@ function App() {
   async function handleLogin(event) {
     event.preventDefault()
 
-    const formData = new URLSearchParams()
+    setIsLoading(true)
 
-    formData.append("username", email)
-    formData.append("password", password)
+    try {
+      const formData = new URLSearchParams()
 
-    const response = await fetch("http://127.0.0.1:8000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData,
-    })
+      formData.append("username", email)
+      formData.append("password", password)
 
-    const data = await response.json()
+      const response = await fetch("http://127.0.0.1:8000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
+      })
 
-    if (!response.ok) {
-      setErrorMessage(data.detail || "Login failed")
-      return
+      const data = await response.json()
+
+      if (!response.ok) {
+        setErrorMessage(data.detail || "Login failed")
+        return
+      }
+
+      setErrorMessage("")
+      setSuccessMessage("")
+
+      localStorage.setItem("token", data.access_token)
+
+      setIsLoggedIn(true)
+
+      await fetchApplications()
+    } catch (error) {
+      setErrorMessage("Unable to connect to the server")
+    } finally {
+      setIsLoading(false)
     }
-
-    setErrorMessage("")
-    setSuccessMessage("")
-
-    localStorage.setItem("token", data.access_token)
-
-    setIsLoggedIn(true)
-
-    fetchApplications()
   }
 
   async function handleSignup(event) {
     event.preventDefault()
 
-    const response = await fetch("http://127.0.0.1:8000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        email: email,
-        password: password,
-      }),
-    })
+    setIsLoading(true)
 
-    const data = await response.json()
+    try {
+      const response = await fetch("http://127.0.0.1:8000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+        }),
+      })
 
-    if (!response.ok) {
-      setErrorMessage(data.detail || "Signup failed")
-      return
+      const data = await response.json()
+
+      if (!response.ok) {
+        setErrorMessage(data.detail || "Signup failed")
+        return
+      }
+
+      setErrorMessage("")
+      setSuccessMessage("Account created successfully. You can now log in.")
+      setAuthMode("login")
+      setUsername("")
+      setPassword("")
+    } catch (error) {
+      setErrorMessage("Unable to connect to the server")
+    } finally {
+      setIsLoading(false)
     }
-
-    setErrorMessage("")
-    setSuccessMessage("Account created successfully. You can now log in.")
-    setAuthMode("login")
-    setUsername("")
-    setPassword("")
   }
 
   async function fetchApplications() {
@@ -238,8 +255,12 @@ function App() {
               required
             />
 
-            <button type="submit">
-              {authMode === "login" ? "Login" : "Sign Up"}
+            <button type="submit" disabled={isLoading}>
+              {isLoading
+                ? "Loading..."
+                : authMode === "login"
+                  ? "Login"
+                  : "Sign Up"}
             </button>
 
             {errorMessage && (
