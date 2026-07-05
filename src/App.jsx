@@ -10,6 +10,7 @@ function App() {
   const [role, setRole] = useState("")
   const [status, setStatus] = useState("")
   const [notes, setNotes] = useState("")
+  const [appliedDate, setAppliedDate] = useState(null)
   const [editingId, setEditingId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
@@ -173,6 +174,7 @@ function App() {
         role: role,
         status: status,
         notes: notes,
+        applied_date: appliedDate,
       }),
     })
 
@@ -180,6 +182,7 @@ function App() {
     setRole("")
     setStatus("")
     setNotes("")
+    setAppliedDate("")
 
     fetchApplications()
   }
@@ -213,6 +216,7 @@ function App() {
         role: role,
         status: status,
         notes: notes,
+        applied_date: appliedDate,
       }),
     })
 
@@ -220,6 +224,7 @@ function App() {
     setRole("")
     setStatus("")
     setNotes("")
+    setAppliedDate("")
     setEditingId(null)
 
     fetchApplications()
@@ -360,6 +365,12 @@ function App() {
                 <option value="Offer">Offer</option>
               </select>
 
+              <input
+                type="date"
+                value={appliedDate}
+                onChange={(event) => setAppliedDate(event.target.value)}
+              />
+
               <textarea
                 placeholder="Notes (optional)"
                 value={notes}
@@ -379,6 +390,7 @@ function App() {
                     setRole("")
                     setStatus("")
                     setNotes("")
+                    setAppliedDate("")
                   }}
                 >
                   Cancel
@@ -417,6 +429,12 @@ function App() {
               <h3>{application.company}</h3>
               <p>{application.role}</p>
 
+              {application.applied_date && (
+                <p className="application-date">
+                  Applied: {application.applied_date}
+                </p>
+              )}
+
               {application.notes && (
                 <p className="application-notes">{application.notes}</p>
               )}
@@ -433,6 +451,7 @@ function App() {
                   setRole(application.role)
                   setStatus(application.status)
                   setNotes(application.notes || "")
+                  setAppliedDate(application.applied_date || "")
                 }}
               >
                 Edit
