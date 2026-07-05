@@ -270,3 +270,9 @@
   text-align: center;
   color: #6b7280;
 }
+
+.error-message {
+  margin: 16px 0 0;
+  color: #dc2626;
+  font-weight: 600;
+}
