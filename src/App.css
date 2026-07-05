@@ -154,3 +154,79 @@
 .logout-button:hover {
   background: #f3f4f6;
 }
+
+.summary-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  margin: 24px 0;
+}
+
+.summary-card h2 {
+  margin-top: 0;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.summary-stats div {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.summary-stats span {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.summary-stats p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.application-form-card select {
+  flex: 1;
+  min-width: 180px;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+}
+
+.application-form-card select:focus {
+  border-color: #2563eb;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.status-badge.applied {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-badge.interview {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status-badge.offer {
+  background: #dcfce7;
+  color: #15803d;
+}

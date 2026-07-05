@@ -12,6 +12,18 @@ function App() {
   const [editingId, setEditingId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  const appliedCount = applications.filter(
+    (application) => application.status === "Applied"
+  ).length
+
+  const interviewCount = applications.filter(
+    (application) => application.status === "Interview"
+  ).length
+
+  const offerCount = applications.filter(
+    (application) => application.status === "Offer"
+  ).length
+
   useEffect(() => {
     const token = localStorage.getItem("token")
 
@@ -60,6 +72,13 @@ function App() {
         Authorization: `Bearer ${token}`,
       },
     })
+
+    if (!response.ok) {
+      localStorage.removeItem("token")
+      setIsLoggedIn(false)
+      setApplications([])
+      return
+    }
 
     const data = await response.json()
 
@@ -164,6 +183,32 @@ function App() {
             Logout
           </button>
 
+          <div className="summary-card">
+            <h2>Dashboard</h2>
+
+            <div className="summary-stats">
+              <div>
+                <span>{applications.length}</span>
+                <p>Total</p>
+              </div>
+
+              <div>
+                <span>{appliedCount}</span>
+                <p>Applied</p>
+              </div>
+
+              <div>
+                <span>{interviewCount}</span>
+                <p>Interviews</p>
+              </div>
+
+              <div>
+                <span>{offerCount}</span>
+                <p>Offers</p>
+              </div>
+            </div>
+          </div>
+
           <div className="application-form-card">
             <h2>{editingId ? "Edit Application" : "Add Application"}</h2>
 
@@ -173,6 +218,7 @@ function App() {
                 placeholder="Company"
                 value={company}
                 onChange={(event) => setCompany(event.target.value)}
+                required
               />
 
               <input
@@ -180,18 +226,37 @@ function App() {
                 placeholder="Role"
                 value={role}
                 onChange={(event) => setRole(event.target.value)}
+                required
               />
 
-              <input
-                type="text"
-                placeholder="Status"
+              <select
                 value={status}
                 onChange={(event) => setStatus(event.target.value)}
-              />
+                required
+              >
+                <option value="">Select status</option>
+                <option value="Applied">Applied</option>
+                <option value="Interview">Interview</option>
+                <option value="Offer">Offer</option>
+              </select>
 
               <button type="submit">
                 {editingId ? "Update Application" : "Add Application"}
               </button>
+
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingId(null)
+                    setCompany("")
+                    setRole("")
+                    setStatus("")
+                  }}
+                >
+                  Cancel
+                </button>
+              )}
             </form>
           </div>
 
@@ -201,7 +266,9 @@ function App() {
             <div key={application.id} className="application-card">
               <h3>{application.company}</h3>
               <p>{application.role}</p>
-              <p>{application.status}</p>
+              <span className={`status-badge ${application.status.toLowerCase()}`}>
+                {application.status}
+              </span>
 
               <button
                 className="edit-button"
