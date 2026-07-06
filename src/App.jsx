@@ -196,7 +196,15 @@ function App() {
     fetchApplications()
   }
 
-  async function handleDeleteApplication(id) {
+  async function handleDeleteApplication(id) { 
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this application?"
+    )
+
+    if (!confirmed) {
+      return
+    }
+
     const token = localStorage.getItem("token")
 
     await fetch(`http://127.0.0.1:8000/applications/${id}`, {
