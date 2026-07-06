@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import Dashboard from "./components/Dashboard"
 import SearchControls from "./components/SearchControls"
 import ApplicationCard from "./components/ApplicationCard"
+import ApplicationForm from "./components/ApplicationForm"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -358,76 +359,29 @@ function App() {
             offerCount={offerCount}
           />
 
-          <div className="application-form-card">
-            <h2>{editingId ? "Edit Application" : "Add Application"}</h2>
-
-            <form onSubmit={editingId ? handleUpdateApplication : handleAddApplication}>
-              <input
-                type="text"
-                placeholder="Company"
-                value={company}
-                onChange={(event) => setCompany(event.target.value)}
-                required
-              />
-
-              <input
-                type="text"
-                placeholder="Role"
-                value={role}
-                onChange={(event) => setRole(event.target.value)}
-                required
-              />
-
-              <select
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
-                required
-              >
-                <option value="">Select status</option>
-                <option value="Applied">Applied</option>
-                <option value="Interview">Interview</option>
-                <option value="Offer">Offer</option>
-              </select>
-
-              <input
-                type="date"
-                value={appliedDate}
-                onChange={(event) => setAppliedDate(event.target.value)}
-              />
-
-              <textarea
-                placeholder="Notes (optional)"
-                value={notes}
-                onChange={(event) => setNotes(event.target.value)}
-              />
-
-              <button type="submit" disabled={isSubmittingApplication}>
-                {isSubmittingApplication
-                  ? editingId
-                    ? "Updating..."
-                    : "Adding..."
-                  : editingId
-                    ? "Update Application"
-                    : "Add Application"}
-              </button>
-
-              {editingId && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditingId(null)
-                    setCompany("")
-                    setRole("")
-                    setStatus("")
-                    setNotes("")
-                    setAppliedDate("")
-                  }}
-                >
-                  Cancel
-                </button>
-              )}
-            </form>
-          </div>
+          <ApplicationForm
+            editingId={editingId}
+            company={company}
+            setCompany={setCompany}
+            role={role}
+            setRole={setRole}
+            status={status}
+            setStatus={setStatus}
+            appliedDate={appliedDate}
+            setAppliedDate={setAppliedDate}
+            notes={notes}
+            setNotes={setNotes}
+            isSubmittingApplication={isSubmittingApplication}
+            onSubmit={editingId ? handleUpdateApplication : handleAddApplication}
+            onCancel={() => {
+              setEditingId(null)
+              setCompany("")
+              setRole("")
+              setStatus("")
+              setNotes("")
+              setAppliedDate("")
+            }}
+          />
 
           <h2>My Applications</h2>
 
