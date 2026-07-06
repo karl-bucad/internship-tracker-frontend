@@ -3,6 +3,7 @@ import Dashboard from "./components/Dashboard"
 import SearchControls from "./components/SearchControls"
 import ApplicationCard from "./components/ApplicationCard"
 import ApplicationForm from "./components/ApplicationForm"
+import AuthForm from "./components/AuthForm"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -279,71 +280,23 @@ function App() {
       <h1>Internship Tracker</h1>
 
       {!isLoggedIn && (
-        <div className="login-card">
-          <h2>{authMode === "login" ? "Login" : "Sign Up"}</h2>
-
-          <form onSubmit={authMode === "login" ? handleLogin : handleSignup}>
-            {authMode === "signup" && (
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                required
-              />
-            )}
-
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
-
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
-
-            <button type="submit" disabled={isLoading}>
-              {isLoading
-                ? "Loading..."
-                : authMode === "login"
-                  ? "Login"
-                  : "Sign Up"}
-            </button>
-
-            {errorMessage && (
-              <p className="error-message">{errorMessage}</p>
-            )}
-
-            {successMessage && (
-              <p className="success-message">{successMessage}</p>
-            )}
-
-          </form>
-
-          <p className="auth-switch">
-            {authMode === "login"
-              ? "Don't have an account?"
-              : "Already have an account?"}
-
-            <button
-              type="button"
-              onClick={() => {
-                setAuthMode(authMode === "login" ? "signup" : "login")
-                setErrorMessage("")
-                setSuccessMessage("")
-              }}
-            >
-              {authMode === "login" ? "Sign Up" : "Login"}
-            </button>
-          </p>
-        </div>
+        <AuthForm
+          authMode={authMode}
+          setAuthMode={setAuthMode}
+          username={username}
+          setUsername={setUsername}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+          successMessage={successMessage}
+          setErrorMessage={setErrorMessage}
+          setSuccessMessage={setSuccessMessage}
+          onLogin={handleLogin}
+          onSignup={handleSignup}
+        />
       )}
 
       {isLoggedIn && (
