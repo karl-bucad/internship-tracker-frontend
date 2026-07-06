@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import Dashboard from "./components/Dashboard"
 import SearchControls from "./components/SearchControls"
+import ApplicationCard from "./components/ApplicationCard"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -444,44 +445,19 @@ function App() {
           )}
 
           {sortedApplications.map((application) => (
-            <div key={application.id} className="application-card">
-              <h3>{application.company}</h3>
-              <p>{application.role}</p>
-
-              {application.applied_date && (
-                <p className="application-date">
-                  Applied: {application.applied_date}
-                </p>
-              )}
-
-              {application.notes && (
-                <p className="application-notes">{application.notes}</p>
-              )}
-
-              <span className={`status-badge ${application.status.toLowerCase()}`}>
-                {application.status}
-              </span>
-
-              <button
-                className="edit-button"
-                onClick={() => {
-                  setEditingId(application.id)
-                  setCompany(application.company)
-                  setRole(application.role)
-                  setStatus(application.status)
-                  setNotes(application.notes || "")
-                  setAppliedDate(application.applied_date || "")
-                }}
-              >
-                Edit
-              </button>
-
-              <button
-                className="delete-button"
-                onClick={() => handleDeleteApplication(application.id)}>
-                Delete
-              </button>
-            </div>
+            <ApplicationCard
+              key={application.id}
+              application={application}
+              onEdit={(application) => {
+                setEditingId(application.id)
+                setCompany(application.company)
+                setRole(application.role)
+                setStatus(application.status)
+                setNotes(application.notes || "")
+                setAppliedDate(application.applied_date || "")
+              }}
+              onDelete={handleDeleteApplication}
+            />
           ))}
         </>
       )}
