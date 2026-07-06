@@ -1,16 +1,55 @@
-# React + Vite
+# Internship Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A full-stack web application for tracking internship applications. Users can sign up, log in, and manage their own internship applications with notes, dates, search, filtering, sorting, and dashboard statistics.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Frontend: https://internship-tracker-frontend-95sv.onrender.com  
+Backend API: https://internship-tracker-api-thqo.onrender.com
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- User signup and login
+- JWT authentication
+- Password hashing
+- User-specific internship applications
+- Create, read, update, and delete applications
+- Application notes
+- Applied date tracking
+- Dashboard summary cards
+- Search by company or role
+- Filter by status
+- Sort by newest or oldest application date
+- Delete confirmation
+- Duplicate submission prevention
+- Persistent login with localStorage
+- Deployed frontend and backend
+- PostgreSQL database in production
 
-## Expanding the Oxlint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+**Frontend**
+- React
+- Vite
+- JavaScript
+- CSS
+
+**Backend**
+- FastAPI
+- Python
+- JWT authentication
+- PostgreSQL
+- SQLite for local development
+
+## Project Links
+
+- Frontend repository: https://github.com/karl-bucad/internship-tracker-frontend
+- Backend repository: https://github.com/karl-bucad/internship-tracker-api
+
+## Future Improvements
+
+- Refactor React code into reusable components
+- Improve UI responsiveness and polish
+- Add job posting links
+- Add interview dates and deadlines
+- Add analytics charts
