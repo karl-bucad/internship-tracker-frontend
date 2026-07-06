@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import Dashboard from "./components/Dashboard"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -232,16 +233,16 @@ function App() {
 
   async function handleUpdateApplication(event) {
     event.preventDefault()
-  
+
     if (isSubmittingApplication) {
       return
     }
-  
+
     setIsSubmittingApplication(true)
-  
+
     try {
       const token = localStorage.getItem("token")
-  
+
       await fetch(`${API_URL}/applications/${editingId}`, {
         method: "PUT",
         headers: {
@@ -256,14 +257,14 @@ function App() {
           applied_date: appliedDate,
         }),
       })
-  
+
       setCompany("")
       setRole("")
       setStatus("")
       setNotes("")
       setAppliedDate("")
       setEditingId(null)
-  
+
       await fetchApplications()
     } finally {
       setIsSubmittingApplication(false)
@@ -348,31 +349,12 @@ function App() {
             Logout
           </button>
 
-          <div className="summary-card">
-            <h2>Dashboard</h2>
-
-            <div className="summary-stats">
-              <div>
-                <span>{applications.length}</span>
-                <p>Total</p>
-              </div>
-
-              <div>
-                <span>{appliedCount}</span>
-                <p>Applied</p>
-              </div>
-
-              <div>
-                <span>{interviewCount}</span>
-                <p>Interviews</p>
-              </div>
-
-              <div>
-                <span>{offerCount}</span>
-                <p>Offers</p>
-              </div>
-            </div>
-          </div>
+          <Dashboard
+            totalCount={applications.length}
+            appliedCount={appliedCount}
+            interviewCount={interviewCount}
+            offerCount={offerCount}
+          />
 
           <div className="application-form-card">
             <h2>{editingId ? "Edit Application" : "Add Application"}</h2>
