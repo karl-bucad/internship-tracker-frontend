@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import "./App.css"
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
+
 function App() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -79,7 +81,7 @@ function App() {
       formData.append("username", email)
       formData.append("password", password)
 
-      const response = await fetch("http://127.0.0.1:8000/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -115,7 +117,7 @@ function App() {
     setIsLoading(true)
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/signup", {
+      const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +151,7 @@ function App() {
   async function fetchApplications() {
     const token = localStorage.getItem("token")
 
-    const response = await fetch("http://127.0.0.1:8000/applications", {
+    const response = await fetch(`${API_URL}/applications`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -172,7 +174,7 @@ function App() {
 
     const token = localStorage.getItem("token")
 
-    await fetch("http://127.0.0.1:8000/applications", {
+    await fetch(`${API_URL}/applications`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -207,7 +209,7 @@ function App() {
 
     const token = localStorage.getItem("token")
 
-    await fetch(`http://127.0.0.1:8000/applications/${id}`, {
+    await fetch(`${API_URL}/applications/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -222,7 +224,7 @@ function App() {
 
     const token = localStorage.getItem("token")
 
-    await fetch(`http://127.0.0.1:8000/applications/${editingId}`, {
+    await fetch(`${API_URL}/applications/${editingId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
