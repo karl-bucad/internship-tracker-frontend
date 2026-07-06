@@ -23,6 +23,7 @@ function App() {
   const [username, setUsername] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isSubmittingApplication, setIsSubmittingApplication] = useState(false)
 
   const appliedCount = applications.filter(
     (application) => application.status === "Applied"
@@ -172,33 +173,43 @@ function App() {
   async function handleAddApplication(event) {
     event.preventDefault()
 
-    const token = localStorage.getItem("token")
+    if (isSubmittingApplication) {
+      return
+    }
 
-    await fetch(`${API_URL}/applications`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        company: company,
-        role: role,
-        status: status,
-        notes: notes,
-        applied_date: appliedDate,
-      }),
-    })
+    setIsSubmittingApplication(true)
 
-    setCompany("")
-    setRole("")
-    setStatus("")
-    setNotes("")
-    setAppliedDate("")
+    try {
+      const token = localStorage.getItem("token")
 
-    fetchApplications()
+      await fetch(`${API_URL}/applications`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          company: company,
+          role: role,
+          status: status,
+          notes: notes,
+          applied_date: appliedDate,
+        }),
+      })
+
+      setCompany("")
+      setRole("")
+      setStatus("")
+      setNotes("")
+      setAppliedDate("")
+
+      await fetchApplications()
+    } finally {
+      setIsSubmittingApplication(false)
+    }
   }
 
-  async function handleDeleteApplication(id) { 
+  async function handleDeleteApplication(id) {
     const confirmed = window.confirm(
       "Are you sure you want to delete this application?"
     )
@@ -396,8 +407,14 @@ function App() {
                 onChange={(event) => setNotes(event.target.value)}
               />
 
-              <button type="submit">
-                {editingId ? "Update Application" : "Add Application"}
+              <button type="submit" disabled={isSubmittingApplication}>
+                {isSubmittingApplication
+                  ? editingId
+                    ? "Updating..."
+                    : "Adding..."
+                  : editingId
+                    ? "Update Application"
+                    : "Add Application"}
               </button>
 
               {editingId && (
