@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import Dashboard from "./components/Dashboard"
+import SearchControls from "./components/SearchControls"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -429,33 +430,14 @@ function App() {
 
           <h2>My Applications</h2>
 
-          <input
-            className="search-input"
-            type="text"
-            placeholder="Search by company or role"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
+          <SearchControls
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
           />
-
-          <select
-            className="filter-select"
-            value={statusFilter}
-            onChange={(event) => setStatusFilter(event.target.value)}
-          >
-            <option value="All">All statuses</option>
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Offer">Offer</option>
-          </select>
-
-          <select
-            className="filter-select"
-            value={sortOrder}
-            onChange={(event) => setSortOrder(event.target.value)}
-          >
-            <option value="newest">Newest first</option>
-            <option value="oldest">Oldest first</option>
-          </select>
 
           {filteredApplications.length == 0 && (
             <p className="no-results">No applications found.</p>
