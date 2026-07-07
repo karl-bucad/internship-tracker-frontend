@@ -183,6 +183,8 @@ function App() {
 
       await fetchApplications()
       toast.success("Application added successfully!")
+    } catch (error) {
+      toast.error("Unable to connect to the server")
     } finally {
       setIsSubmittingApplication(false)
     }

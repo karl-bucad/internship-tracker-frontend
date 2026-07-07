@@ -78,34 +78,34 @@ export async function addApplication(token, application) {
 
 export async function updateApplication(token, id, application) {
     const response = await fetch(`${API_URL}/applications/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(application),
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(application),
     })
-  
-    const data = await response.json()
-  
-    return {
-      response,
-      data,
-    }
-  }
 
-  export async function deleteApplication(token, id) {
-    const response = await fetch(`${API_URL}/applications/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  
     const data = await response.json()
-  
+
     return {
-      response,
-      data,
+        response,
+        data,
     }
-  }
+}
+
+export async function deleteApplication(token, id) {
+    const response = await fetch(`${API_URL}/applications/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+
+    const data = await response.json()
+
+    return {
+        response,
+        data,
+    }
+}
