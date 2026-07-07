@@ -42,3 +42,18 @@ export async function loginUser(email, password) {
       data,
     }
   }
+
+  export async function getApplications(token) {
+    const response = await fetch(`${API_URL}/applications`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  
+    const data = await response.json()
+  
+    return {
+      response,
+      data,
+    }
+  }

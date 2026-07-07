@@ -4,7 +4,11 @@ import SearchControls from "./components/SearchControls"
 import ApplicationCard from "./components/ApplicationCard"
 import ApplicationForm from "./components/ApplicationForm"
 import AuthForm from "./components/AuthForm"
-import { loginUser, signupUser } from "./services/api"
+import {
+  loginUser,
+  signupUser,
+  getApplications,
+} from "./services/api"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -137,11 +141,7 @@ function App() {
   async function fetchApplications() {
     const token = localStorage.getItem("token")
 
-    const response = await fetch(`${API_URL}/applications`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const { response, data } = await getApplications(token)
 
     if (!response.ok) {
       localStorage.removeItem("token")
@@ -149,8 +149,6 @@ function App() {
       setApplications([])
       return
     }
-
-    const data = await response.json()
 
     setApplications(data)
   }
