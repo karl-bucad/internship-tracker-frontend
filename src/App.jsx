@@ -16,8 +16,6 @@ import {
 } from "./services/api"
 import "./App.css"
 
-const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
-
 function App() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -33,10 +31,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("All")
   const [sortOrder, setSortOrder] = useState("newest")
-  const [errorMessage, setErrorMessage] = useState("")
   const [authMode, setAuthMode] = useState("login")
   const [username, setUsername] = useState("")
-  const [successMessage, setSuccessMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmittingApplication, setIsSubmittingApplication] = useState(false)
 
@@ -99,9 +95,6 @@ function App() {
         return
       }
 
-      setErrorMessage("")
-      setSuccessMessage("")
-
       localStorage.setItem("token", data.access_token)
 
       setIsLoggedIn(true)
@@ -131,7 +124,6 @@ function App() {
         return
       }
 
-      setErrorMessage("")
       toast.success("Account created successfully! Please log in.")
       setAuthMode("login")
       setUsername("")
@@ -265,10 +257,6 @@ function App() {
             password={password}
             setPassword={setPassword}
             isLoading={isLoading}
-            errorMessage={errorMessage}
-            successMessage={successMessage}
-            setErrorMessage={setErrorMessage}
-            setSuccessMessage={setSuccessMessage}
             onLogin={handleLogin}
             onSignup={handleSignup}
           />

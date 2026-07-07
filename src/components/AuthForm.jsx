@@ -8,10 +8,6 @@ function AuthForm({
     password,
     setPassword,
     isLoading,
-    errorMessage,
-    successMessage,
-    setErrorMessage,
-    setSuccessMessage,
     onLogin,
     onSignup,
   }) {
@@ -53,14 +49,6 @@ function AuthForm({
                 ? "Login"
                 : "Sign Up"}
           </button>
-  
-          {errorMessage && (
-            <p className="error-message">{errorMessage}</p>
-          )}
-  
-          {successMessage && (
-            <p className="success-message">{successMessage}</p>
-          )}
         </form>
   
         <p className="auth-switch">
@@ -72,8 +60,6 @@ function AuthForm({
             type="button"
             onClick={() => {
               setAuthMode(authMode === "login" ? "signup" : "login")
-              setErrorMessage("")
-              setSuccessMessage("")
             }}
           >
             {authMode === "login" ? "Sign Up" : "Login"}
