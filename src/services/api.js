@@ -83,3 +83,14 @@ export async function loginUser(email, password) {
   
     return response
   }
+
+  export async function deleteApplication(token, id) {
+    const response = await fetch(`${API_URL}/applications/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  
+    return response
+  }

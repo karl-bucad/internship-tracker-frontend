@@ -10,6 +10,7 @@ import {
   getApplications,
   addApplication,
   updateApplication,
+  deleteApplication,
 } from "./services/api"
 import "./App.css"
 
@@ -198,12 +199,7 @@ function App() {
 
     const token = localStorage.getItem("token")
 
-    await fetch(`${API_URL}/applications/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    await deleteApplication(token, id)
 
     fetchApplications()
   }
