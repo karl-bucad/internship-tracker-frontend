@@ -199,7 +199,12 @@ function App() {
 
     const token = localStorage.getItem("token")
 
-    await deleteApplication(token, id)
+    const { response, data } = await deleteApplication(token, id)
+
+    if (!response.ok) {
+      toast.error(data.detail || "Unable to delete application")
+      return
+    }
 
     await fetchApplications()
     toast.success("Application deleted successfully!")
@@ -224,7 +229,7 @@ function App() {
         notes: notes,
         applied_date: appliedDate,
       })
-      
+
       if (!response.ok) {
         toast.error(data.detail || "Unable to update application")
         return

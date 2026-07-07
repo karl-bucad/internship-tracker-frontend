@@ -94,13 +94,18 @@ export async function updateApplication(token, id, application) {
     }
   }
 
-export async function deleteApplication(token, id) {
+  export async function deleteApplication(token, id) {
     const response = await fetch(`${API_URL}/applications/${id}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
-
-    return response
-}
+  
+    const data = await response.json()
+  
+    return {
+      response,
+      data,
+    }
+  }
