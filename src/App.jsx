@@ -95,7 +95,7 @@ function App() {
       const { response, data } = await loginUser(email, password)
 
       if (!response.ok) {
-        setErrorMessage(data.detail || "Login failed")
+        toast.error(data.detail || "Login failed")
         return
       }
 
