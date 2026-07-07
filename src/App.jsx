@@ -199,17 +199,21 @@ function App() {
       return
     }
 
-    const token = localStorage.getItem("token")
+    try {
+      const token = localStorage.getItem("token")
 
-    const { response, data } = await deleteApplication(token, id)
+      const { response, data } = await deleteApplication(token, id)
 
-    if (!response.ok) {
-      toast.error(data.detail || "Unable to delete application")
-      return
+      if (!response.ok) {
+        toast.error(data.detail || "Unable to delete application")
+        return
+      }
+
+      await fetchApplications()
+      toast.success("Application deleted successfully!")
+    } catch (error) {
+      toast.error("Unable to connect to the server")
     }
-
-    await fetchApplications()
-    toast.success("Application deleted successfully!")
   }
 
   async function handleUpdateApplication(event) {
