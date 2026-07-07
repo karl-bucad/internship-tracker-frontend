@@ -4,6 +4,7 @@ import SearchControls from "./components/SearchControls"
 import ApplicationCard from "./components/ApplicationCard"
 import ApplicationForm from "./components/ApplicationForm"
 import AuthForm from "./components/AuthForm"
+import { loginUser } from "./services/api"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -82,20 +83,7 @@ function App() {
     setIsLoading(true)
 
     try {
-      const formData = new URLSearchParams()
-
-      formData.append("username", email)
-      formData.append("password", password)
-
-      const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData,
-      })
-
-      const data = await response.json()
+      const { response, data } = await loginUser(email, password)
 
       if (!response.ok) {
         setErrorMessage(data.detail || "Login failed")
