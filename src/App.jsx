@@ -185,6 +185,7 @@ function App() {
       setAppliedDate("")
 
       await fetchApplications()
+      toast.success("Application added successfully!")
     } finally {
       setIsSubmittingApplication(false)
     }
