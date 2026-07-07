@@ -204,7 +204,8 @@ function App() {
 
     await deleteApplication(token, id)
 
-    fetchApplications()
+    await fetchApplications()
+    toast.success("Application deleted successfully!")
   }
 
   async function handleUpdateApplication(event) {
