@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react"
+import toast, { Toaster } from "react-hot-toast"
+
 import Dashboard from "./components/Dashboard"
 import SearchControls from "./components/SearchControls"
 import ApplicationCard from "./components/ApplicationCard"
@@ -130,7 +132,7 @@ function App() {
       }
 
       setErrorMessage("")
-      setSuccessMessage("Account created successfully. You can now log in.")
+      toast.success("Account created successfully! Please log in.")
       setAuthMode("login")
       setUsername("")
       setPassword("")
@@ -238,99 +240,108 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <h1>Internship Tracker</h1>
+    <>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
 
-      {!isLoggedIn && (
-        <AuthForm
-          authMode={authMode}
-          setAuthMode={setAuthMode}
-          username={username}
-          setUsername={setUsername}
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-          successMessage={successMessage}
-          setErrorMessage={setErrorMessage}
-          setSuccessMessage={setSuccessMessage}
-          onLogin={handleLogin}
-          onSignup={handleSignup}
-        />
-      )}
+      <div className="app">
+        <h1>Internship Tracker</h1>
 
-      {isLoggedIn && (
-        <>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-
-          <Dashboard
-            totalCount={applications.length}
-            appliedCount={appliedCount}
-            interviewCount={interviewCount}
-            offerCount={offerCount}
+        {!isLoggedIn && (
+          <AuthForm
+            authMode={authMode}
+            setAuthMode={setAuthMode}
+            username={username}
+            setUsername={setUsername}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+            successMessage={successMessage}
+            setErrorMessage={setErrorMessage}
+            setSuccessMessage={setSuccessMessage}
+            onLogin={handleLogin}
+            onSignup={handleSignup}
           />
+        )}
 
-          <ApplicationForm
-            editingId={editingId}
-            company={company}
-            setCompany={setCompany}
-            role={role}
-            setRole={setRole}
-            status={status}
-            setStatus={setStatus}
-            appliedDate={appliedDate}
-            setAppliedDate={setAppliedDate}
-            notes={notes}
-            setNotes={setNotes}
-            isSubmittingApplication={isSubmittingApplication}
-            onSubmit={editingId ? handleUpdateApplication : handleAddApplication}
-            onCancel={() => {
-              setEditingId(null)
-              setCompany("")
-              setRole("")
-              setStatus("")
-              setNotes("")
-              setAppliedDate("")
-            }}
-          />
+        {isLoggedIn && (
+          <>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
 
-          <h2>My Applications</h2>
-
-          <SearchControls
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
-            sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
-          />
-
-          {filteredApplications.length == 0 && (
-            <p className="no-results">No applications found.</p>
-          )}
-
-          {sortedApplications.map((application) => (
-            <ApplicationCard
-              key={application.id}
-              application={application}
-              onEdit={(application) => {
-                setEditingId(application.id)
-                setCompany(application.company)
-                setRole(application.role)
-                setStatus(application.status)
-                setNotes(application.notes || "")
-                setAppliedDate(application.applied_date || "")
-              }}
-              onDelete={handleDeleteApplication}
+            <Dashboard
+              totalCount={applications.length}
+              appliedCount={appliedCount}
+              interviewCount={interviewCount}
+              offerCount={offerCount}
             />
-          ))}
-        </>
-      )}
-    </div>
+
+            <ApplicationForm
+              editingId={editingId}
+              company={company}
+              setCompany={setCompany}
+              role={role}
+              setRole={setRole}
+              status={status}
+              setStatus={setStatus}
+              appliedDate={appliedDate}
+              setAppliedDate={setAppliedDate}
+              notes={notes}
+              setNotes={setNotes}
+              isSubmittingApplication={isSubmittingApplication}
+              onSubmit={editingId ? handleUpdateApplication : handleAddApplication}
+              onCancel={() => {
+                setEditingId(null)
+                setCompany("")
+                setRole("")
+                setStatus("")
+                setNotes("")
+                setAppliedDate("")
+              }}
+            />
+
+            <h2>My Applications</h2>
+
+            <SearchControls
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
+            />
+
+            {filteredApplications.length == 0 && (
+              <p className="no-results">No applications found.</p>
+            )}
+
+            {sortedApplications.map((application) => (
+              <ApplicationCard
+                key={application.id}
+                application={application}
+                onEdit={(application) => {
+                  setEditingId(application.id)
+                  setCompany(application.company)
+                  setRole(application.role)
+                  setStatus(application.status)
+                  setNotes(application.notes || "")
+                  setAppliedDate(application.applied_date || "")
+                }}
+                onDelete={handleDeleteApplication}
+              />
+            ))}
+          </>
+        )}
+      </div>
+    </>
   )
 }
 
