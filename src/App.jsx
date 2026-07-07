@@ -4,7 +4,7 @@ import SearchControls from "./components/SearchControls"
 import ApplicationCard from "./components/ApplicationCard"
 import ApplicationForm from "./components/ApplicationForm"
 import AuthForm from "./components/AuthForm"
-import { loginUser } from "./services/api"
+import { loginUser, signupUser } from "./services/api"
 import "./App.css"
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
@@ -111,19 +111,11 @@ function App() {
     setIsLoading(true)
 
     try {
-      const response = await fetch(`${API_URL}/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-        }),
-      })
-
-      const data = await response.json()
+      const { response, data } = await signupUser(
+        username,
+        email,
+        password
+      )
 
       if (!response.ok) {
         setErrorMessage(data.detail || "Signup failed")
