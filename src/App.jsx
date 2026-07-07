@@ -127,7 +127,7 @@ function App() {
       )
 
       if (!response.ok) {
-        setErrorMessage(data.detail || "Signup failed")
+        toast.error(data.detail || "Signup failed")
         return
       }
 
