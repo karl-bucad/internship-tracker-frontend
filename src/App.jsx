@@ -162,13 +162,18 @@ function App() {
     try {
       const token = localStorage.getItem("token")
 
-      await addApplication(token, {
+      const { response, data } = await addApplication(token, {
         company: company,
         role: role,
         status: status,
         notes: notes,
         applied_date: appliedDate,
       })
+
+      if (!response.ok) {
+        toast.error(data.detail || "Unable to add application")
+        return
+      }
 
       setCompany("")
       setRole("")

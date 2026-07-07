@@ -2,95 +2,100 @@ const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000"
 
 export async function loginUser(email, password) {
     const formData = new URLSearchParams()
-  
+
     formData.append("username", email)
     formData.append("password", password)
-  
+
     const response = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData,
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
     })
-  
-    const data = await response.json()
-  
-    return {
-      response,
-      data,
-    }
-  }
 
-  export async function signupUser(username, email, password) {
+    const data = await response.json()
+
+    return {
+        response,
+        data,
+    }
+}
+
+export async function signupUser(username, email, password) {
     const response = await fetch(`${API_URL}/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        email,
-        password,
-      }),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            username,
+            email,
+            password,
+        }),
     })
-  
+
     const data = await response.json()
-  
-    return {
-      response,
-      data,
-    }
-  }
 
-  export async function getApplications(token) {
+    return {
+        response,
+        data,
+    }
+}
+
+export async function getApplications(token) {
     const response = await fetch(`${API_URL}/applications`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     })
-  
+
     const data = await response.json()
-  
+
     return {
-      response,
-      data,
+        response,
+        data,
     }
-  }
+}
 
-  export async function addApplication(token, application) {
+export async function addApplication(token, application) {
     const response = await fetch(`${API_URL}/applications`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(application),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(application),
     })
-  
-    return response
-  }
 
-  export async function updateApplication(token, id, application) {
-    const response = await fetch(`${API_URL}/applications/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(application),
-    })
-  
-    return response
-  }
+    const data = await response.json()
 
-  export async function deleteApplication(token, id) {
+    return {
+        response,
+        data,
+    }
+}
+
+export async function updateApplication(token, id, application) {
     const response = await fetch(`${API_URL}/applications/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(application),
     })
-  
+
     return response
-  }
+}
+
+export async function deleteApplication(token, id) {
+    const response = await fetch(`${API_URL}/applications/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+
+    return response
+}
