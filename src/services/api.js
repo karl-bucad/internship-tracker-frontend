@@ -57,3 +57,16 @@ export async function loginUser(email, password) {
       data,
     }
   }
+
+  export async function addApplication(token, application) {
+    const response = await fetch(`${API_URL}/applications`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(application),
+    })
+  
+    return response
+  }

@@ -8,6 +8,7 @@ import {
   loginUser,
   signupUser,
   getApplications,
+  addApplication,
 } from "./services/api"
 import "./App.css"
 
@@ -165,19 +166,12 @@ function App() {
     try {
       const token = localStorage.getItem("token")
 
-      await fetch(`${API_URL}/applications`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          company: company,
-          role: role,
-          status: status,
-          notes: notes,
-          applied_date: appliedDate,
-        }),
+      await addApplication(token, {
+        company: company,
+        role: role,
+        status: status,
+        notes: notes,
+        applied_date: appliedDate,
       })
 
       setCompany("")
