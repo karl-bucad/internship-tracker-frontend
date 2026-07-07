@@ -235,6 +235,7 @@ function App() {
       setEditingId(null)
 
       await fetchApplications()
+      toast.success("Application updated successfully!")
     } finally {
       setIsSubmittingApplication(false)
     }
