@@ -70,3 +70,16 @@ export async function loginUser(email, password) {
   
     return response
   }
+
+  export async function updateApplication(token, id, application) {
+    const response = await fetch(`${API_URL}/applications/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(application),
+    })
+  
+    return response
+  }
