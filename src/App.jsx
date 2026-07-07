@@ -217,13 +217,18 @@ function App() {
     try {
       const token = localStorage.getItem("token")
 
-      await updateApplication(token, editingId, {
+      const { response, data } = await updateApplication(token, editingId, {
         company: company,
         role: role,
         status: status,
         notes: notes,
         applied_date: appliedDate,
       })
+      
+      if (!response.ok) {
+        toast.error(data.detail || "Unable to update application")
+        return
+      }
 
       setCompany("")
       setRole("")
