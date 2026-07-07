@@ -108,7 +108,7 @@ function App() {
 
       await fetchApplications()
     } catch (error) {
-      setErrorMessage("Unable to connect to the server")
+      toast.error("Unable to connect to the server")
     } finally {
       setIsLoading(false)
     }
