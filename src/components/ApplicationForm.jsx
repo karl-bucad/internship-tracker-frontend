@@ -18,7 +18,7 @@ function ApplicationForm({
       <div className="application-form-card">
         <h2>{editingId ? "Edit Application" : "Add Application"}</h2>
   
-        <form onSubmit={onSubmit}>
+        <form className="application-form" onSubmit={onSubmit}>
           <input
             type="text"
             placeholder="Company"

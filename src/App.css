@@ -332,3 +332,27 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
+
+.application-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.application-form button {
+  min-height: 52px;
+}
+
+.application-form textarea {
+  min-height: 52px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.application-form input[type="date"] {
+  grid-column: span 1;
+}
+
+.application-form textarea {
+  grid-column: span 1;
+}
