@@ -431,3 +431,15 @@
   color: #374151;
   line-height: 1.5;
 }
+
+.job-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.job-link:hover {
+  text-decoration: underline;
+}

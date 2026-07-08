@@ -26,6 +26,7 @@ function App() {
   const [status, setStatus] = useState("")
   const [notes, setNotes] = useState("")
   const [appliedDate, setAppliedDate] = useState(null)
+  const [jobUrl, setJobUrl] = useState("")
   const [editingId, setEditingId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
@@ -173,6 +174,7 @@ function App() {
         status: status,
         notes: notes,
         applied_date: appliedDate,
+        job_url: jobUrl,
       })
 
       if (!response.ok) {
@@ -185,6 +187,7 @@ function App() {
       setStatus("")
       setNotes("")
       setAppliedDate("")
+      setJobUrl("")
 
       await fetchApplications()
       toast.success("Application added successfully!")
@@ -239,6 +242,7 @@ function App() {
         status: status,
         notes: notes,
         applied_date: appliedDate,
+        job_url: jobUrl,
       })
 
       if (!response.ok) {
@@ -251,6 +255,7 @@ function App() {
       setStatus("")
       setNotes("")
       setAppliedDate("")
+      setJobUrl("")
       setEditingId(null)
 
       await fetchApplications()
@@ -322,6 +327,8 @@ function App() {
               setAppliedDate={setAppliedDate}
               notes={notes}
               setNotes={setNotes}
+              jobUrl={jobUrl}
+              setJobUrl={setJobUrl}
               isSubmittingApplication={isSubmittingApplication}
               onSubmit={editingId ? handleUpdateApplication : handleAddApplication}
               onCancel={() => {
@@ -331,6 +338,7 @@ function App() {
                 setStatus("")
                 setNotes("")
                 setAppliedDate("")
+                setJobUrl("")
               }}
             />
 
@@ -360,6 +368,7 @@ function App() {
                   setStatus(application.status)
                   setNotes(application.notes || "")
                   setAppliedDate(application.applied_date || "")
+                  setJobUrl(application.job_url || "")
                 }}
                 onDelete={handleDeleteApplication}
               />

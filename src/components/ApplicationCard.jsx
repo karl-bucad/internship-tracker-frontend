@@ -15,6 +15,17 @@ function ApplicationCard({ application, onEdit, onDelete }) {
                     <p className="application-notes">{application.notes}</p>
                 )}
 
+                {application.job_url && (
+                    <a
+                        className="job-link"
+                        href={application.job_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        View job posting
+                    </a>
+                )}
+
                 <span className={`status-badge ${application.status.toLowerCase()}`}>
                     {application.status}
                 </span>
