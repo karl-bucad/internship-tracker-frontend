@@ -4,22 +4,22 @@ function Dashboard({ totalCount, appliedCount, interviewCount, offerCount }) {
         <h2>Dashboard</h2>
   
         <div className="summary-stats">
-          <div>
+          <div className="stat-card">
             <span>{totalCount}</span>
             <p>Total</p>
           </div>
   
-          <div>
+          <div className="stat-card">
             <span>{appliedCount}</span>
             <p>Applied</p>
           </div>
   
-          <div>
+          <div className="stat-card">
             <span>{interviewCount}</span>
             <p>Interviews</p>
           </div>
   
-          <div>
+          <div className="stat-card">
             <span>{offerCount}</span>
             <p>Offers</p>
           </div>
