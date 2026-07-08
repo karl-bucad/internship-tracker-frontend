@@ -363,3 +363,20 @@
   gap: 16px;
   margin-bottom: 24px;
 }
+
+.application-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.application-card-content {
+  flex: 1;
+}
+
+.application-card-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
