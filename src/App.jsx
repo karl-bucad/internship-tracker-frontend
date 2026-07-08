@@ -80,6 +80,7 @@ function App() {
     localStorage.removeItem("token")
     setIsLoggedIn(false)
     setApplications([])
+    toast.success("Logged out successfully")
   }
 
   async function handleLogin(event) {
