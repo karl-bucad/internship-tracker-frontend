@@ -138,16 +138,16 @@ function App() {
   async function fetchApplications() {
     try {
       const token = localStorage.getItem("token")
-  
+
       const { response, data } = await getApplications(token)
-  
+
       if (!response.ok) {
         localStorage.removeItem("token")
         setIsLoggedIn(false)
         setApplications([])
         return
       }
-  
+
       setApplications(data)
     } catch (error) {
       toast.error("Unable to connect to the server")
@@ -271,7 +271,10 @@ function App() {
       />
 
       <div className="app">
-        <h1>Internship Tracker</h1>
+        <header className="app-header">
+          <h1>Internship Tracker</h1>
+          <p>Track your applications, interviews, and offers in one place.</p>
+        </header>
 
         {!isLoggedIn && (
           <AuthForm

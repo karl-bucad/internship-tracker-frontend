@@ -301,3 +301,18 @@
 .auth-switch button:hover {
   text-decoration: underline;
 }
+
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app-header h1 {
+  margin-bottom: 8px;
+}
+
+.app-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1rem;
+}
