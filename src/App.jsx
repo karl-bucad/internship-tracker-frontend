@@ -273,8 +273,16 @@ function App() {
 
       <div className="app">
         <header className="app-header">
-          <h1>Internship Tracker</h1>
-          <p>Track your applications, interviews, and offers in one place.</p>
+          <div>
+            <h1>Internship Tracker</h1>
+            <p>Track your applications, interviews, and offers in one place.</p>
+          </div>
+
+          {isLoggedIn && (
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
         </header>
 
         {!isLoggedIn && (
@@ -295,10 +303,6 @@ function App() {
 
         {isLoggedIn && (
           <>
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
-
             <Dashboard
               totalCount={applications.length}
               appliedCount={appliedCount}
@@ -362,7 +366,7 @@ function App() {
             ))}
           </>
         )}
-      </div>
+      </div >
     </>
   )
 }
