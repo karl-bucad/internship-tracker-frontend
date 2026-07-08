@@ -208,11 +208,14 @@
 }
 
 .status-badge {
-  display: inline-block;
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 7px 14px;
   border-radius: 999px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-top: 8px;
   margin-bottom: 16px;
 }
 
