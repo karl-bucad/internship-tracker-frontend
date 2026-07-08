@@ -412,3 +412,19 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.application-role {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.application-date {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.application-notes {
+  margin-top: 12px;
+  color: #374151;
+  line-height: 1.5;
+}
