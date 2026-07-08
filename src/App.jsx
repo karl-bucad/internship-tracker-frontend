@@ -136,18 +136,22 @@ function App() {
   }
 
   async function fetchApplications() {
-    const token = localStorage.getItem("token")
-
-    const { response, data } = await getApplications(token)
-
-    if (!response.ok) {
-      localStorage.removeItem("token")
-      setIsLoggedIn(false)
-      setApplications([])
-      return
+    try {
+      const token = localStorage.getItem("token")
+  
+      const { response, data } = await getApplications(token)
+  
+      if (!response.ok) {
+        localStorage.removeItem("token")
+        setIsLoggedIn(false)
+        setApplications([])
+        return
+      }
+  
+      setApplications(data)
+    } catch (error) {
+      toast.error("Unable to connect to the server")
     }
-
-    setApplications(data)
   }
 
   async function handleAddApplication(event) {
