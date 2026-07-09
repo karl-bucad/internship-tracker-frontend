@@ -34,6 +34,7 @@ function App() {
   const [sortOrder, setSortOrder] = useState("newest")
   const [authMode, setAuthMode] = useState("login")
   const [username, setUsername] = useState("")
+  const [currentUserEmail, setCurrentUserEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmittingApplication, setIsSubmittingApplication] = useState(false)
 
@@ -70,17 +71,21 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token")
+    const storedEmail = localStorage.getItem("userEmail")
 
     if (token) {
       setIsLoggedIn(true)
+      setCurrentUserEmail(storedEmail || "")
       fetchApplications()
     }
   }, [])
 
   function handleLogout() {
     localStorage.removeItem("token")
+    localStorage.removeItem("userEmail")
     setIsLoggedIn(false)
     setApplications([])
+    setCurrentUserEmail("")
     toast.success("Logged out successfully")
   }
 
@@ -98,6 +103,8 @@ function App() {
       }
 
       localStorage.setItem("token", data.access_token)
+      localStorage.setItem("userEmail", email)
+      setCurrentUserEmail(email)
 
       setIsLoggedIn(true)
 
@@ -284,9 +291,18 @@ function App() {
           </div>
 
           {isLoggedIn && (
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
+            <div className="header-actions">
+              <div className="current-user">
+                <span className="current-user-label">Signed in as</span>
+                <span className="current-user-email">
+                  {currentUserEmail}
+                </span>
+              </div>
+
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
           )}
         </header>
 
