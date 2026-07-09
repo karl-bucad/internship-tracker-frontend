@@ -487,6 +487,7 @@
 .app.dark {
   background: #111827;
   color: #f9fafb;
+  min-height: 100vh;
 }
 
 .app.dark .app-header p,
@@ -536,4 +537,8 @@
 .app.dark .theme-toggle-button {
   background: #f9fafb;
   color: #111827;
+}
+
+body:has(.app.dark) {
+  background: #111827;
 }
