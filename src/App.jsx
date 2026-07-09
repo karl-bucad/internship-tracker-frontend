@@ -36,6 +36,7 @@ function App() {
   const [username, setUsername] = useState("")
   const [currentUserEmail, setCurrentUserEmail] = useState("")
   const [currentUsername, setCurrentUsername] = useState("")
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmittingApplication, setIsSubmittingApplication] = useState(false)
 
@@ -74,6 +75,11 @@ function App() {
     const token = localStorage.getItem("token")
     const storedEmail = localStorage.getItem("userEmail")
     const storedUsername = localStorage.getItem("username")
+    const storedTheme = localStorage.getItem("theme")
+
+    if (storedTheme === "dark") {
+      setIsDarkMode(true)
+    }
 
     if (token) {
       setIsLoggedIn(true)
@@ -92,6 +98,13 @@ function App() {
     setCurrentUserEmail("")
     setCurrentUsername("")
     toast.success("Logged out successfully")
+  }
+
+  function toggleDarkMode() {
+    const newTheme = !isDarkMode
+
+    setIsDarkMode(newTheme)
+    localStorage.setItem("theme", newTheme ? "dark" : "light")
   }
 
   async function handleLogin(event) {
@@ -291,7 +304,7 @@ function App() {
         }}
       />
 
-      <div className="app">
+      <div className={`app ${isDarkMode ? "dark" : ""}`}>
         <header className="app-header">
           <div>
             <h1>Internship Tracker</h1>
@@ -300,6 +313,13 @@ function App() {
 
           {isLoggedIn && (
             <div className="header-actions">
+              <button
+                className="theme-toggle-button"
+                type="button"
+                onClick={toggleDarkMode}
+              >
+                {isDarkMode ? "Light Mode" : "Dark Mode"}
+              </button>
               <div className="current-user">
                 <span className="current-user-name">
                   {currentUsername}

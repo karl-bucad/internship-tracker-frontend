@@ -467,3 +467,73 @@
   font-weight: 700;
   color: #111827;
 }
+
+.theme-toggle-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.theme-toggle-button:hover {
+  background: #111827;
+}
+
+.app.dark {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.app.dark .app-header p,
+.app.dark .current-user-email,
+.app.dark .current-user-label,
+.app.dark .application-date {
+  color: #d1d5db;
+}
+
+.app.dark .current-user-name {
+  color: #f9fafb;
+}
+
+.app.dark .summary-card,
+.app.dark .application-form-card,
+.app.dark .application-card,
+.app.dark .login-card,
+.app.dark .no-results {
+  background: #1f2937;
+  color: #f9fafb;
+  border-color: #374151;
+}
+
+.app.dark .stat-card {
+  background: #111827;
+  border-color: #374151;
+}
+
+.app.dark input,
+.app.dark select,
+.app.dark textarea {
+  background: #111827;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.app.dark input::placeholder,
+.app.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+.app.dark .application-role,
+.app.dark .application-notes {
+  color: #e5e7eb;
+}
+
+.app.dark .theme-toggle-button {
+  background: #f9fafb;
+  color: #111827;
+}
