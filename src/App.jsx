@@ -35,6 +35,7 @@ function App() {
   const [authMode, setAuthMode] = useState("login")
   const [username, setUsername] = useState("")
   const [currentUserEmail, setCurrentUserEmail] = useState("")
+  const [currentUsername, setCurrentUsername] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmittingApplication, setIsSubmittingApplication] = useState(false)
 
@@ -72,10 +73,12 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token")
     const storedEmail = localStorage.getItem("userEmail")
+    const storedUsername = localStorage.getItem("username")
 
     if (token) {
       setIsLoggedIn(true)
       setCurrentUserEmail(storedEmail || "")
+      setCurrentUsername(storedUsername || "")
       fetchApplications()
     }
   }, [])
@@ -83,9 +86,11 @@ function App() {
   function handleLogout() {
     localStorage.removeItem("token")
     localStorage.removeItem("userEmail")
+    localStorage.removeItem("username")
     setIsLoggedIn(false)
     setApplications([])
     setCurrentUserEmail("")
+    setCurrentUsername("")
     toast.success("Logged out successfully")
   }
 
@@ -103,8 +108,11 @@ function App() {
       }
 
       localStorage.setItem("token", data.access_token)
-      localStorage.setItem("userEmail", email)
-      setCurrentUserEmail(email)
+      localStorage.setItem("userEmail", data.email)
+      localStorage.setItem("username", data.username)
+
+      setCurrentUserEmail(data.email)
+      setCurrentUsername(data.username)
 
       setIsLoggedIn(true)
 
@@ -293,7 +301,10 @@ function App() {
           {isLoggedIn && (
             <div className="header-actions">
               <div className="current-user">
-                <span className="current-user-label">Signed in as</span>
+                <span className="current-user-name">
+                  {currentUsername}
+                </span>
+
                 <span className="current-user-email">
                   {currentUserEmail}
                 </span>
