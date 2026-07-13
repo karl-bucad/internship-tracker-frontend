@@ -52,6 +52,10 @@ function App() {
     (application) => application.status === "Offer"
   ).length
 
+  const rejectedCount = applications.filter(
+    (application) => application.status === "Rejected"
+  ).length
+
   const filteredApplications = applications.filter((application) => {
     const matchesSearch =
       application.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -320,6 +324,7 @@ function App() {
               >
                 {isDarkMode ? "Light Mode" : "Dark Mode"}
               </button>
+
               <div className="current-user">
                 <span className="current-user-name">
                   {currentUsername}
@@ -360,8 +365,8 @@ function App() {
               appliedCount={appliedCount}
               interviewCount={interviewCount}
               offerCount={offerCount}
+              rejectedCount={rejectedCount}
             />
-
             <ApplicationForm
               editingId={editingId}
               company={company}

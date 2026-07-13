@@ -234,6 +234,11 @@
   color: #15803d;
 }
 
+.status-badge.rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
 .search-input {
   width: 100%;
   box-sizing: border-box;
